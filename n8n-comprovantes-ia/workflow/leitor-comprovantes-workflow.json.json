@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "credentials": {}
+    },
+    {
+      "name": "Get File Path",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "method": "GET",
+        "url": "<TELEGRAM_GET_FILE_ENDPOINT>"
+      }
+    },
+    {
+      "name": "Download Receipt",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "url": "<TELEGRAM_DOWNLOAD_FILE_ENDPOINT>",
+        "responseFormat": "file"
+      }
+    },
+    {
+      "name": "Convert Image to JPEG",
+      "type": "n8n-nodes-base.code"
+    },
+    {
+      "name": "Analyze Receipt with Gemini",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "credentials": {},
+      "parameters": {
+        "model": "Gemini 2.5 Flash"
+      }
+    },
+    {
+      "name": "Parse JSON Response",
+      "type": "n8n-nodes-base.code"
+    },
+    {
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "credentials": {},
+      "parameters": {
+        "document": "<GOOGLE_SHEETS_DOCUMENT>",
+        "sheet": "<SHEET_NAME>"
+      }
+    }
+  ]
+}
